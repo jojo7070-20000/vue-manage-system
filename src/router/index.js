@@ -20,6 +20,40 @@ export default new Router({
                     meta: { title: '系统首页' }
                 },
                 {
+                    path: '/security-secret-config',
+                    component: () => import(/* webpackChunkName: "form" */ '../components/page/SecuritySecretConfigBaseForm.vue'),
+                    meta: { title: '安全配置管理' }
+                },
+                {
+                    path: '/security-gateway-config-view',
+                    component: () => import(/* webpackChunkName: "form" */ '../components/page/SecurityGatewayConfigBaseTable.vue'),
+                    meta: { title: '安全网关管理' }
+                },
+                {
+                    path: '/new-security-gateway-config-form',
+                    component: () => import(/* webpackChunkName: "form" */ '../components/page/SecurityGatewayConfigNewBaseForm.vue'),
+                    meta: { title: '安全网关管理-新增' }
+                },
+
+                {
+                    path: '/security-gateway-set-site-config-view',
+                    component: () => import(/* webpackChunkName: "form" */ '../components/page/SecurityGatewaySetSiteConfigBaseTable.vue'),
+                    meta: { title: '安全网关集合站管理' }
+                },
+                {
+                    path: '/new-security-gateway-set-site-config-form',
+                    component: () => import(/* webpackChunkName: "form" */ '../components/page/SecurityGatewaySetSiteConfigNewBaseForm.vue'),
+                    meta: { title: '安全网关集合站管理-新增' }
+                },
+
+                {
+                    path: '/security-set-site-config-form',
+                    component: () => import(/* webpackChunkName: "form" */ '../components/page/SecuritySetSiteConfigNewBaseForm.vue'),
+                    meta: { title: '安全集合站配置' }
+                },
+
+                 // test
+                {
                     path: '/icon',
                     component: () => import(/* webpackChunkName: "icon" */ '../components/page/Icon.vue'),
                     meta: { title: '自定义图标' }

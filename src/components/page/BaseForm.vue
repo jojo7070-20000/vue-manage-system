@@ -137,7 +137,7 @@ export default {
                 date2: '',
                 delivery: true,
                 type: ['步步高'],
-                resource: '小天才',
+                resource: 'imoo',
                 desc: '',
                 options: []
             }
