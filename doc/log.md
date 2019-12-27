@@ -19,9 +19,9 @@ v12.13.1
 npm install
 
 ## 开发
-npm run servce
+npm run serve
 
 ## 部署 
-
+npm run build
 
 ```

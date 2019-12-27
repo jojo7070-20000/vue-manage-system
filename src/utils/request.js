@@ -1,11 +1,22 @@
 import axios from 'axios';
 
-const service = axios.create({
+let config = {
+    // baseURL: 'http://localhost:8099/', // 替换关键词-作用是我们每次发送的请求都会带一个/api的前缀。
+    timeout: 5000
+};
+
+if (process.env.NODE_ENV === 'development') {
+    config.baseURL = 'http://localhost:8099/';
+    // {
     // process.env.NODE_ENV === 'development' 来判断是否开发环境
     // easy-mock服务挂了，暂时不使用了
     // baseURL: 'https://www.easy-mock.com/mock/592501a391470c0ac1fab128',
-    timeout: 5000
-});
+    // baseURL: 'http://localhost:8099/', // 替换关键词-作用是我们每次发送的请求都会带一个/api的前缀。
+    // timeout: 5000
+    // }
+}
+
+const service = axios.create(config);
 
 service.interceptors.request.use(
     config => {

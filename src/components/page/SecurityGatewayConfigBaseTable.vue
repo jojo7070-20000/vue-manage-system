@@ -3,7 +3,7 @@
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
-                    <i class="el-icon-lx-cascades"></i> 安全网关管理
+                    <i class="el-icon-lx-cascades"/> 安全网关管理
                 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
@@ -12,8 +12,8 @@
             <div class="form-box">
                 <el-form ref="form" :model="formSearch" label-width="80px">
                     <el-radio-group v-model="formSearch.resource">
-                        <el-radio label="有效网关"></el-radio>
-                        <el-radio label="无效网关"></el-radio>
+                        <el-radio label="有效网关" @change="queryChange(1)"/>
+                        <el-radio label="无效网关" @change="queryChange(0)"/>
                     </el-radio-group>
                 </el-form>
             </div>
@@ -53,32 +53,27 @@
                     header-cell-class-name="table-header"
                     @selection-change="handleSelectionChange"
             >
-                <el-table-column type="selection" width="55" align="center"></el-table-column>
-                <el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
-                <el-table-column prop="name" label="用户名"></el-table-column>
-                <el-table-column label="账户余额">
-                    <template slot-scope="scope">￥{{scope.row.money}}</template>
+                <el-table-column type="selection" width="55" align="center"/>
+                <el-table-column prop="id" label="ID" width="55" align="center">
+                    <template slot-scope="scope">{{scope.row.id}}</template>
                 </el-table-column>
-                <el-table-column label="头像(查看大图)" align="center">
-                    <template slot-scope="scope">
-                        <el-image
-                                class="table-td-thumb"
-                                :src="scope.row.thumb"
-                                :preview-src-list="[scope.row.thumb]"
-                        ></el-image>
-                    </template>
+                <el-table-column prop="ip" label="IP">
+                    <template slot-scope="scope">{{scope.row.ip}}</template>
                 </el-table-column>
-                <el-table-column prop="address" label="地址"></el-table-column>
+                <el-table-column prop="address" label="域名">
+                    <template slot-scope="scope">{{scope.row.domain}}</template>
+                </el-table-column>
                 <el-table-column label="状态" align="center">
                     <template slot-scope="scope">
                         <el-tag
-                                :type="scope.row.state==='成功'?'success':(scope.row.state==='失败'?'danger':'')"
-                        >{{scope.row.state}}
+                                :type="scope.row.isAbled===1?'success':(scope.row.isAbled===0?'danger':'')"
+                        >{{scope.row.isAbled===1?'有效':'无效'}}
                         </el-tag>
                     </template>
                 </el-table-column>
-
-                <el-table-column prop="date" label="注册时间"></el-table-column>
+                <el-table-column prop="date" label="时间">
+                    <template slot-scope="scope">{{scope.row.addTime}}</template>
+                </el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
                         <el-button
@@ -101,11 +96,11 @@
                 <el-pagination
                         background
                         layout="total, prev, pager, next"
-                        :current-page="query.pageIndex"
+                        :current-page="query.pageNo"
                         :page-size="query.pageSize"
                         :total="pageTotal"
                         @current-change="handlePageChange"
-                ></el-pagination>
+                />
             </div>
         </div>
 
@@ -113,10 +108,10 @@
         <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
             <el-form ref="form" :model="form" label-width="70px">
                 <el-form-item label="用户名">
-                    <el-input v-model="form.name"></el-input>
+                    <el-input v-model="form.name"/>
                 </el-form-item>
                 <el-form-item label="地址">
-                    <el-input v-model="form.address"></el-input>
+                    <el-input v-model="form.address"/>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -128,7 +123,7 @@
 </template>
 
 <script>
-    import {fetchData} from '../../api/index';
+    import {fetchData} from '../../api/securityGatewayConfig';
 
     export default {
         name: 'securityGatewayConfigBaseTable',
@@ -143,7 +138,7 @@
                 query: {
                     address: '',
                     name: '',
-                    pageIndex: 1,
+                    pageNo: 1,
                     pageSize: 10
                 },
                 tableData: [],
@@ -163,14 +158,24 @@
             // 获取 easy-mock 的模拟数据
             getData() {
                 fetchData(this.query).then(res => {
+                    if (res.status !== 1) {
+                        return;
+                    }
                     console.log(res);
-                    this.tableData = res.list;
-                    this.pageTotal = res.pageTotal || 50;
+                    this.tableData = res.data.list;
+                    this.pageTotal = res.data.pageTotal || 50;
                 });
+            },
+            // 筛选
+            queryChange(val) {
+                console.log(val);
+                this.$set(this.query, 'isAbled', val);
+                console.log(this.query);
+                this.getData();
             },
             // 触发搜索按钮
             handleSearch() {
-                this.$set(this.query, 'pageIndex', 1);
+                this.$set(this.query, 'pageNo', 1);
                 this.getData();
             },
             // 删除操作
@@ -214,7 +219,7 @@
             },
             // 分页导航
             handlePageChange(val) {
-                this.$set(this.query, 'pageIndex', val);
+                this.$set(this.query, 'pageNo', val);
                 this.getData();
             }
         }
