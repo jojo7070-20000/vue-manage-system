@@ -25,7 +25,7 @@
                         type="primary"
                         icon="el-icon-lx-add"
                         class="handle-del mr10"
-                        @click="delAllSelection"
+                        @click="jmpAdd"
                 >新增
                 </el-button>
 
@@ -33,15 +33,15 @@
                         type="primary"
                         icon="el-icon-delete"
                         class="handle-del mr10"
-                        @click="delAllSelection"
+                        @click="setDel"
                 >批量删除
                 </el-button>
 
                 <el-button
-                        type="primary"
-                        icon="el-icon-lx-comment"
+                        @click="setAvail"
                         class="handle-del mr10"
-                        @click="delAllSelection"
+                        icon="el-icon-lx-comment"
+                        type="primary"
                 >批量设置为无效网关
                 </el-button>
             </div>
@@ -76,12 +76,12 @@
                 </el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
-                        <el-button
-                                type="text"
-                                icon="el-icon-edit"
-                                @click="handleEdit(scope.$index, scope.row)"
-                        >编辑
-                        </el-button>
+                        <!--                        <el-button-->
+                        <!--                                type="text"-->
+                        <!--                                icon="el-icon-edit"-->
+                        <!--                                @click="handleEdit(scope.$index, scope.row)"-->
+                        <!--                        >编辑-->
+                        <!--                        </el-button>-->
                         <el-button
                                 type="text"
                                 icon="el-icon-delete"
@@ -105,25 +105,26 @@
         </div>
 
         <!-- 编辑弹出框 -->
-        <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
-            <el-form ref="form" :model="form" label-width="70px">
-                <el-form-item label="用户名">
-                    <el-input v-model="form.name"/>
-                </el-form-item>
-                <el-form-item label="地址">
-                    <el-input v-model="form.address"/>
-                </el-form-item>
-            </el-form>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="editVisible = false">取 消</el-button>
-                <el-button type="primary" @click="saveEdit">确 定</el-button>
-            </span>
-        </el-dialog>
+        <!--        <el-dialog title="编辑" :visible.sync="editVisible" width="30%">-->
+        <!--            <el-form ref="form" :model="form" label-width="70px">-->
+        <!--                <el-form-item label="用户名">-->
+        <!--                    <el-input v-model="form.name"/>-->
+        <!--                </el-form-item>-->
+        <!--                <el-form-item label="地址">-->
+        <!--                    <el-input v-model="form.address"/>-->
+        <!--                </el-form-item>-->
+        <!--            </el-form>-->
+        <!--            <span slot="footer" class="dialog-footer">-->
+        <!--                <el-button @click="editVisible = false">取 消</el-button>-->
+        <!--                <el-button type="primary" @click="saveEdit">确 定</el-button>-->
+        <!--            </span>-->
+        <!--        </el-dialog>-->
     </div>
 </template>
 
 <script>
     import {fetchData} from '../../api/securityGatewayConfig';
+    import service from "../../utils/request";
 
     export default {
         name: 'securityGatewayConfigBaseTable',
@@ -155,7 +156,7 @@
             this.getData();
         },
         methods: {
-            // 获取 easy-mock 的模拟数据
+            // 获取 api 数据
             getData() {
                 fetchData(this.query).then(res => {
                     if (res.status !== 1) {
@@ -170,8 +171,71 @@
             queryChange(val) {
                 console.log(val);
                 this.$set(this.query, 'isAbled', val);
+                this.$set(this.query, 'pageNo', 1);
                 console.log(this.query);
                 this.getData();
+            },
+            // 新增路由跳转
+            jmpAdd() {
+                this.$router.push('/new-security-gateway-config-form')
+            },
+            // 设置无效
+            setAvail() {
+                let that = this;
+                // (v,x,y)->
+                this.multipleSelection.forEach(function (p1, p2, p3) {
+                    console.log(p1.id, "p1");
+                    p1.isAbled = 0;
+                    service.post("/security/gateway/config/modify",
+                        {
+                            "isAbled": p1.isAbled,
+                            "id": p1.id
+                        })
+                        .then(function (response) {
+                            if (response.status !== 1) {
+                                return;
+                            }
+                            console.log(
+                                response.data
+                            );
+                            that.$message.success('提交成功！');
+                            that.handlePageChange(1);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                            that.$message.error('提交失败！');
+                        });
+                });
+                // this.handlePageChange(1);
+            },
+            // 设置删除
+            setDel() {
+                let that = this;
+                this.multipleSelection.forEach(function (p1, p2, p3) {
+                    p1.isDel = 1;
+                    console.log(p1.id, "p1");
+                    p1.isAbled = 0;
+                    service.post("/security/gateway/config/modify",
+                        {
+                            "isDel": p1.isDel,
+                            "isAbled": p1.isAbled,
+                            "id": p1.id
+                        })
+                        .then(function (response) {
+                            if (response.status !== 1) {
+                                return;
+                            }
+                            console.log(
+                                response.data
+                            );
+                            that.$message.success('提交成功！');
+                            that.handlePageChange(1);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                            that.$message.error('提交失败！');
+                        });
+                });
             },
             // 触发搜索按钮
             handleSearch() {
@@ -179,12 +243,40 @@
                 this.getData();
             },
             // 删除操作
-            handleDelete(index, row) {
+            handleDelete(index, p1) {
+                let that = this;
                 // 二次确认删除
-                this.$confirm('确定要删除吗？', '提示', {
-                    type: 'warning'
-                })
+                this.$confirm('确定要删除吗？', '提示',
+                    {
+                        type: 'warning'
+                    })
                     .then(() => {
+
+                        console.log(p1);
+                        p1.isDel = 1;
+                        console.log(p1.id, "p1");
+                        p1.isAbled = 0;
+                        service.post("/security/gateway/config/modify",
+                            {
+                                "isDel": p1.isDel,
+                                "isAbled": p1.isAbled,
+                                "id": p1.id
+                            })
+                            .then(function (response) {
+                                if (response.status !== 1) {
+                                    return;
+                                }
+                                console.log(
+                                    response.data
+                                );
+                                that.$message.success('提交成功！');
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                                that.$message.error('提交失败！');
+                            });
+
+
                         this.$message.success('删除成功');
                         this.tableData.splice(index, 1);
                     })
@@ -220,7 +312,13 @@
             // 分页导航
             handlePageChange(val) {
                 this.$set(this.query, 'pageNo', val);
-                this.getData();
+
+                let that = this;
+                setTimeout(function () {
+                    that.getData();
+                    console.log("=====end getData");
+                }, 50);
+
             }
         }
     };

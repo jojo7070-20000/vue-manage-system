@@ -57,9 +57,6 @@
                         console.log(error);
                         that.$message.error('提交失败！');
                     });
-
-
-                this.$message.success('提交成功！');
             }
         }
     };

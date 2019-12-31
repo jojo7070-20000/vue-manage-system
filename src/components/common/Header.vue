@@ -2,8 +2,8 @@
     <div class="header">
         <!-- 折叠按钮 -->
         <div class="collapse-btn" @click="collapseChage">
-            <i v-if="!collapse" class="el-icon-s-fold"></i>
-            <i v-else class="el-icon-s-unfold"></i>
+            <i v-if="!collapse" class="el-icon-s-fold"/>
+            <i v-else class="el-icon-s-unfold"/>
         </div>
         <div class="logo">XD运维管理后台</div>
         <div class="header-right">
@@ -11,7 +11,7 @@
                 <!-- 全屏显示 -->
                 <div class="btn-fullscreen" @click="handleFullScreen">
                     <el-tooltip effect="dark" :content="fullscreen?`取消全屏`:`全屏`" placement="bottom">
-                        <i class="el-icon-rank"></i>
+                        <i class="el-icon-rank"/>
                     </el-tooltip>
                 </div>
                 <!-- 消息中心 -->
@@ -22,10 +22,10 @@
                         placement="bottom"
                     >
                         <router-link to="/tabs">
-                            <i class="el-icon-bell"></i>
+                            <i class="el-icon-bell"/>
                         </router-link>
                     </el-tooltip>
-                    <span class="btn-bell-badge" v-if="message"></span>
+                    <span class="btn-bell-badge" v-if="message"/>
                 </div>
                 <!-- 用户头像 -->
                 <div class="user-avator">
@@ -35,7 +35,7 @@
                 <el-dropdown class="user-name" trigger="click" @command="handleCommand">
                     <span class="el-dropdown-link">
                         {{username}}
-                        <i class="el-icon-caret-bottom"></i>
+                        <i class="el-icon-caret-bottom"/>
                     </span>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item divided command="loginout">退出登录</el-dropdown-item>
@@ -67,6 +67,7 @@ export default {
         handleCommand(command) {
             if (command == 'loginout') {
                 localStorage.removeItem('ms_username');
+                localStorage.removeItem('token');
                 this.$router.push('/login');
             }
         },

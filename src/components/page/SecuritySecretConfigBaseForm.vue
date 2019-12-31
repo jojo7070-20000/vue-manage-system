@@ -20,7 +20,7 @@
                         </el-col>
                         <el-col class="line" :span="6" style="width: 216px;">秒。 不能小于0秒，默认为5秒</el-col>
                     </el-form-item>
-                    ˛
+
                     <el-form-item label="视频文件分段标准时长：">
                         <el-col class="line" :span="5">
                             <el-input v-model="form.videoFileSegmentationTime" @change="onChangeValue"/>

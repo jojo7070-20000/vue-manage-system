@@ -16,6 +16,15 @@ if (process.env.NODE_ENV === 'development') {
     // }
 }
 
+let token = localStorage.getItem('token');
+let headers = {
+    common: {
+        'Authorization': "Bearer " + token
+    },
+};
+config.headers = headers;
+console.log("================", config);
+
 const service = axios.create(config);
 
 service.interceptors.request.use(
