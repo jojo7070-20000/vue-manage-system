@@ -38,12 +38,12 @@ export default new Router({
                 {
                     path: '/security-gateway-set-site-config-view',
                     component: () => import(/* webpackChunkName: "form" */ '../components/page/SecurityGatewaySetSiteConfigBaseTable.vue'),
-                    meta: { title: '安全网关集合站管理' }
+                    meta: { title: '下载集合站管理' }
                 },
                 {
                     path: '/new-security-gateway-set-site-config-form',
                     component: () => import(/* webpackChunkName: "form" */ '../components/page/SecurityGatewaySetSiteConfigNewBaseForm.vue'),
-                    meta: { title: '安全网关集合站管理-新增' }
+                    meta: { title: '下载集合站管理-新增' }
                 },
 
                 {

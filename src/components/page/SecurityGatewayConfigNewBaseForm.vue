@@ -47,6 +47,7 @@
                     .then(function (response) {
                         // console.log(response);
                         if (response.status !== 1) {
+                            that.$message.error('提交失败！' + response.msg);
                             return;
                         }
                         console.log(
@@ -58,9 +59,6 @@
                         console.log(error);
                         that.$message.error('提交失败！');
                     });
-
-
-                this.$message.success('提交成功！');
             }
         }
     };

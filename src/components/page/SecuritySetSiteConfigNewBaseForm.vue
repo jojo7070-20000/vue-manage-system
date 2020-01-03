@@ -51,6 +51,7 @@
             service.get("/security/set/site/config/findOne")
                 .then(function (response) {
                     if (response.status !== 1) {
+                        that.$message.error('提交失败！' + response.msg);
                         return;
                     }
                     console.log(
@@ -78,6 +79,7 @@
                     .then(function (response) {
                         // console.log(response);
                         if (response.status !== 1) {
+                            that.$message.error('提交失败！' + response.msg);
                             return;
                         }
                         console.log(

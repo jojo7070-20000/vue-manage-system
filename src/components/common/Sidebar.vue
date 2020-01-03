@@ -87,11 +87,11 @@
                     {
                         icon: 'el-icon-lx-cascades',
                         index: 'security-gateway-set-site-config',
-                        title: '安全网关集合站管理',
+                        title: '下载集合站管理',
                         subs: [
                             {
                                 index: 'security-gateway-set-site-config-view',
-                                title: '安全网关集合站'
+                                title: '下载集合站'
                             },
                             {
                                 index: 'new-security-gateway-set-site-config-form',

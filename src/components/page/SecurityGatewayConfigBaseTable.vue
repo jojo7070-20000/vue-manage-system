@@ -38,11 +38,20 @@
                 </el-button>
 
                 <el-button
-                        @click="setAvail"
+                        v-if="showInvalid"
+                        @click="setAvail(0)"
                         class="handle-del mr10"
                         icon="el-icon-lx-comment"
                         type="primary"
                 >批量设置为无效网关
+                </el-button>
+                <el-button
+                        v-if="showAvila"
+                        @click="setAvail(1)"
+                        class="handle-del mr10"
+                        icon="el-icon-lx-comment"
+                        type="primary"
+                >批量设置为有效网关
                 </el-button>
             </div>
             <el-table
@@ -130,6 +139,8 @@
         name: 'securityGatewayConfigBaseTable',
         data() {
             return {
+                showInvalid: 1,
+                showAvila: 0,//控制按钮显示
                 formSearch: {
                     // name: '',
                     resource: '有效网关'
@@ -139,6 +150,7 @@
                 query: {
                     address: '',
                     name: '',
+                    isAbled: 1,
                     pageNo: 1,
                     pageSize: 10
                 },
@@ -170,6 +182,15 @@
             // 筛选
             queryChange(val) {
                 console.log(val);
+                if (val === 1) {
+                    this.showInvalid = 1;
+                    this.showAvila = 0;
+                }
+                if (val === 0) {
+                    this.showInvalid = 0;
+                    this.showAvila = 1;
+                }
+
                 this.$set(this.query, 'isAbled', val);
                 this.$set(this.query, 'pageNo', 1);
                 console.log(this.query);
@@ -180,12 +201,12 @@
                 this.$router.push('/new-security-gateway-config-form')
             },
             // 设置无效
-            setAvail() {
+            setAvail(isAbled) {
                 let that = this;
                 // (v,x,y)->
                 this.multipleSelection.forEach(function (p1, p2, p3) {
                     console.log(p1.id, "p1");
-                    p1.isAbled = 0;
+                    p1.isAbled = isAbled;
                     service.post("/security/gateway/config/modify",
                         {
                             "isAbled": p1.isAbled,
@@ -206,7 +227,6 @@
                             that.$message.error('提交失败！');
                         });
                 });
-                // this.handlePageChange(1);
             },
             // 设置删除
             setDel() {
@@ -270,15 +290,12 @@
                                     response.data
                                 );
                                 that.$message.success('提交成功！');
+                                that.tableData.splice(index, 1);
                             })
                             .catch(function (error) {
                                 console.log(error);
                                 that.$message.error('提交失败！');
                             });
-
-
-                        this.$message.success('删除成功');
-                        this.tableData.splice(index, 1);
                     })
                     .catch(() => {
                     });

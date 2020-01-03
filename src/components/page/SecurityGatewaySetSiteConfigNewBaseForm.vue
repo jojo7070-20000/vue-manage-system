@@ -3,7 +3,7 @@
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
-                    <i class="el-icon-lx-cascades"/> 安全网关集合站管理
+                    <i class="el-icon-lx-cascades"/> 下载关集合站管理
                 </el-breadcrumb-item>
                 <el-breadcrumb-item>新增</el-breadcrumb-item>
             </el-breadcrumb>
@@ -46,6 +46,7 @@
                 service.post("/security/gateway/set/site/config/batch_modify", this.form)
                     .then(function (response) {
                         if (response.status !== 1) {
+                            that.$message.error('提交失败！' + response.msg);
                             return;
                         }
                         console.log(

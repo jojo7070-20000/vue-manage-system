@@ -3,7 +3,7 @@
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
-                    <i class="el-icon-lx-cascades"/> 安全网关集合站管理
+                    <i class="el-icon-lx-cascades"/> 下载集合站管理
                 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
@@ -12,8 +12,8 @@
             <div class="form-box">
                 <el-form ref="form" :model="formSearch" label-width="80px">
                     <el-radio-group v-model="formSearch.resource">
-                        <el-radio label="有效网关集合站" @change="queryChange(1)"/>
-                        <el-radio label="无效网关集合站" @change="queryChange(0)"/>
+                        <el-radio label="有效下载集合站" @change="queryChange(1)"/>
+                        <el-radio label="无效下载集合站" @change="queryChange(0)"/>
                     </el-radio-group>
                 </el-form>
             </div>
@@ -38,11 +38,20 @@
                 </el-button>
 
                 <el-button
+                        v-if="showInvalid"
                         type="primary"
                         icon="el-icon-lx-comment"
                         class="handle-del mr10"
-                        @click="setAvail"
-                >批量设置为无效网关集合网站
+                        @click="setAvail(0)"
+                >批量设置为无效下载集合网站
+                </el-button>
+                <el-button
+                        v-if="showAvila"
+                        type="primary"
+                        icon="el-icon-lx-comment"
+                        class="handle-del mr10"
+                        @click="setAvail(1)"
+                >批量设置为有效下载集合网站
                 </el-button>
             </div>
             <el-table
@@ -131,8 +140,10 @@
         name: 'securityGatewaySetSiteConfigBaseTable',
         data() {
             return {
+                showInvalid: 1,
+                showAvila: 0,//控制按钮显示
                 formSearch: {
-                    resource: '有效网关集合站'
+                    resource: '有效下载集合站',
                 },
                 query: {
                     address: '',
@@ -169,6 +180,15 @@
             // 筛选
             queryChange(val) {
                 console.log(val);
+                if (val === 1) {
+                    this.showInvalid = 1;
+                    this.showAvila = 0;
+                }
+                if (val === 0) {
+                    this.showInvalid = 0;
+                    this.showAvila = 1;
+                }
+
                 this.$set(this.query, 'isAbled', val);
                 this.$set(this.query, 'pageNo', 1);
                 console.log(this.query);
@@ -179,12 +199,12 @@
                 this.$router.push('/new-security-gateway-set-site-config-form')
             },
             // 设置无效
-            setAvail() {
+            setAvail(isAbled) {
                 let that = this;
                 // (v,x,y)->
                 this.multipleSelection.forEach(function (p1, p2, p3) {
                     console.log(p1.id, "p1");
-                    p1.isAbled = 0;
+                    p1.isAbled = isAbled;
                     service.post("/security/gateway/set/site/config/modify",
                         {
                             "isAbled": p1.isAbled,
@@ -269,15 +289,12 @@
                                     response.data
                                 );
                                 that.$message.success('提交成功！');
+                                that.tableData.splice(index, 1);
                             })
                             .catch(function (error) {
                                 console.log(error);
                                 that.$message.error('提交失败！');
                             });
-
-
-                        this.$message.success('删除成功');
-                        this.tableData.splice(index, 1);
                     })
                     .catch(() => {
                     });
