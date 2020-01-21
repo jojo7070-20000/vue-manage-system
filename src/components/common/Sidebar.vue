@@ -104,6 +104,37 @@
                         index: 'security-set-site-config-form',
                         title: '安全集合站配置'
                     },
+                    {
+                        icon: 'el-icon-lx-cascades',
+                        index: 'cdn-config',
+                        title: 'cdn管理',
+                        subs: [
+                            {
+                                index: 'cdn-config-view',
+                                title: 'cdn'
+                            },
+                            {
+                                index: 'new-cdn-config-form',
+                                title: '新增'
+                            }
+                        ]
+                    },
+
+                    {
+                        icon: 'el-icon-lx-cascades',
+                        index: 'fs-config',
+                        title: 'fs管理',
+                        subs: [
+                            {
+                                index: 'fs-config-view',
+                                title: 'fs'
+                            },
+                            {
+                                index: 'new-fs-config-form',
+                                title: '新增'
+                            }
+                        ]
+                    },
 
                     /* 测试页面  */
                     // {

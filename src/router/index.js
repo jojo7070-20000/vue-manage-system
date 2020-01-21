@@ -52,6 +52,28 @@ export default new Router({
                     meta: { title: '安全集合站配置' }
                 },
 
+                {
+                    path: '/cdn-config-view',
+                    component: () => import(/* webpackChunkName: "form" */ '../components/page/CdnConfigBaseTable.vue'),
+                    meta: { title: 'cdn管理' }
+                },
+                {
+                    path: '/new-cdn-config-form',
+                    component: () => import(/* webpackChunkName: "form" */ '../components/page/CdnConfigNewBaseForm.vue'),
+                    meta: { title: 'cdn管理-新增' }
+                },
+
+                {
+                    path: '/fs-config-view',
+                    component: () => import(/* webpackChunkName: "form" */ '../components/page/FsConfigBaseTable.vue'),
+                    meta: { title: 'fs管理' }
+                },
+                {
+                    path: '/new-fs-config-form',
+                    component: () => import(/* webpackChunkName: "form" */ '../components/page/FsConfigNewBaseForm.vue'),
+                    meta: { title: 'fs管理-新增' }
+                },
+
                  // test
                 {
                     path: '/icon',

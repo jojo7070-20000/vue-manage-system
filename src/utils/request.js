@@ -6,7 +6,7 @@ let config = {
 };
 
 if (process.env.NODE_ENV === 'development') {
-    config.baseURL = 'http://localhost:8099/';
+    config.baseURL = 'http://127.0.0.1:20001';
     // {
     // process.env.NODE_ENV === 'development' 来判断是否开发环境
     // easy-mock服务挂了，暂时不使用了

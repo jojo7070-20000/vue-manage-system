@@ -7,7 +7,7 @@ module.exports = {
         open: true,  // 启动后是否自动打开网页
         proxy: {
             '/api': {
-                target: 'http://localhost:8099',
+                target: 'http://127.0.0.1:20001',
                 changeOrigin: true,
                 // pathRewrite: {
                 //     '/ssss': '' // 后段路径
@@ -15,6 +15,4 @@ module.exports = {
             }
         }
     }
-}
-
-
+};
