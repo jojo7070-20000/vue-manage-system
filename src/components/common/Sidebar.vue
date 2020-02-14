@@ -99,10 +99,15 @@
                             }
                         ]
                     },
+                    // {
+                    //     icon: 'el-icon-lx-cascades',
+                    //     index: 'security-set-site-config-form',
+                    //     title: '安全集合站配置'
+                    // },
                     {
                         icon: 'el-icon-lx-cascades',
-                        index: 'security-set-site-config-form',
-                        title: '安全集合站配置'
+                        index: 'security-set-site-config-v2-form',
+                        title: '安全集合站配置v2'
                     },
                     {
                         icon: 'el-icon-lx-cascades',

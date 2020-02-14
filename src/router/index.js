@@ -53,6 +53,12 @@ export default new Router({
                 },
 
                 {
+                    path: '/security-set-site-config-v2-form',
+                    component: () => import(/* webpackChunkName: "form" */ '../components/page/SecuritySetSiteConfigV2NewBaseForm.vue'),
+                    meta: { title: '安全集合站配置v2' }
+                },
+
+                {
                     path: '/cdn-config-view',
                     component: () => import(/* webpackChunkName: "form" */ '../components/page/CdnConfigBaseTable.vue'),
                     meta: { title: 'cdn管理' }
