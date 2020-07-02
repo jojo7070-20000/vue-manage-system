@@ -76,7 +76,7 @@
                     <el-form-item label="粉丝群:" v-for="(ele,index) in form.fansGroupList"
                                   style="width: 1200px;">
                         <el-col :span="4">
-                            <el-select v-model="ele.group_name" placeholder="请选择">
+                            <el-select v-model="!ele.group_name?'potato':ele.group_name" placeholder="请选择">
                                 <el-option key="potato" label="potato" value="potato"></el-option>
                                 <el-option key="telegram" label="telegram" value="telegram"></el-option>
                                 <el-option key="微信" label="微信" value="微信"></el-option>
